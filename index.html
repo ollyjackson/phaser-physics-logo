@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>hello phaser!</title>
+		<title>hello world</title>
 		<script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
 	</head>
 	<body>
@@ -34,13 +34,12 @@
 			game.physics.p2.defaultRestitution = 0.8;
 
 			logo = game.add.sprite(400, 200, 'logo');
-		   
 
-			//  Enable the physics bodies on all the sprites and turn on the visual debugger
 			game.physics.p2.enable([ logo ]);
 
 			logo.body.clearShapes();
 			logo.body.loadPolygon('physicsData', 'logo');
+			logo.body.mass = 100;
 
 			//  Just starts it rotating
 			game.input.onDown.add(boom, this);
