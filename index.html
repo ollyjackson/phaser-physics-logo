@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>hello phaser!</title>
+		<script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+	</head>
+	<body>
+
+	<script type="text/javascript">
+
+	window.onload = function() {
+
+		var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+		function preload() {
+
+			game.load.image('logo', 'assets/logo.png');
+			game.load.physics('physicsData', 'assets/logo.json');
+		    game.load.spritesheet('veggies', 'assets/fruitnveg64wh37.png', 64, 64);
+		}
+
+		var logo;
+
+		var start = false;
+
+		function create() {
+			game.stage.backgroundColor = "#fff";
+
+			//  Enable p2 physics
+			game.physics.startSystem(Phaser.Physics.P2JS);
+
+			//  Make things a bit more bouncey
+			game.physics.p2.defaultRestitution = 0.8;
+
+			logo = game.add.sprite(400, 200, 'logo');
+		   
+
+			//  Enable the physics bodies on all the sprites and turn on the visual debugger
+			game.physics.p2.enable([ logo ]);
+
+			logo.body.clearShapes();
+			logo.body.loadPolygon('physicsData', 'logo');
+
+			//  Just starts it rotating
+			game.input.onDown.add(boom, this);
+
+			veggies = game.add.group();
+			veggies.enableBody = true;
+			veggies.physicsBodyType = Phaser.Physics.P2JS;
+
+			var vegFrames = [ 1, 3, 4, 8 ];
+
+			for (var i = 0; i < 100; i++)
+			{
+				var veg = veggies.create(game.world.randomX, game.world.randomY, 'veggies', game.rnd.pick(vegFrames));
+				veg.body.setCircle(26);
+			}
+
+		}
+
+		function boom() {
+
+			if (game.input.activePointer.x > logo.x)
+			{
+				logo.body.rotateLeft(200);
+			}
+			else
+			{
+				logo.body.rotateRight(200);
+			}
+
+			if (game.input.activePointer.y < logo.y)
+			{
+				logo.body.moveForward(400);
+			}
+			else
+			{
+				logo.body.moveBackward(400);
+			}
+
+		}
+
+		function update() {
+		}
+
+		function render() {
+		}
+
+
+	};
+
+	</script>
+
+	</body>
+</html>
